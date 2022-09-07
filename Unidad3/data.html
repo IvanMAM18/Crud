@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue js</title>
+    <!--Enlace con Vue.JS-->
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        table,tr, td,button{
+            border: 1px solid #000;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="contenedor">
+    <center><h1 id="lista">Tabla lista de usuarios</h1></center>
+    <button @click="action('Add',null)">
+        Add
+    </button>
+        <table id="agregar" v-if="(inAction=='show')">
+            <thead id="titulos"></thead>
+            <tbody >
+                <tr v-for="u in users">
+                    <td>
+                        {{u.id}}
+                    </td>
+                    <td>
+                        {{u.name}}
+                    </td>
+                    <td>
+                        {{u.username}}
+                    </td>
+                    <td>
+                        {{u.password}}
+                    </td>
+                    <td>
+                        {{u.email}}
+                    </td>
+                    <td>
+                        {{u.address.street}}
+                    </td>
+                    <td>
+                        {{u.address.suite}}
+                    </td>
+                    <td>
+                        {{u.address.city}}
+                    </td>
+                    <td>
+                        {{u.address.zipcode}}
+                    </td>
+                    <td>
+                        {{u.address.geo.lat}}
+                    </td>
+                    <td>
+                        {{u.address.geo.lng}}
+                    </td>
+                    <td>
+                        {{u.phone}}
+                    </td>
+                    <td>
+                        {{u.website}}
+                    </td>
+                    <td>
+                        {{u.company.name}}
+                    </td>
+                    <td>
+                        {{u.company.catchPhrase}}
+                    </td>
+                    <td>
+                        {{u.company.bs}}
+                    </td>
+                    <td>
+                        <button @click="action('edit',u)">
+                            Edit
+                        </button>
+                        <button @click="remove(u.id)">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <form v-else action="">
+            <fieldset>
+                <label for="">Name</label><br>
+                <input type="text" placeholder="name" v-model="name" required>
+                <br><br>
+                <label for="">Username</label><br>
+                <input type="text" placeholder="username" v-model="username" required>
+                <br><br>
+                <label for="">Password</label><br>
+                <input type="text" placeholder="password" v-model="password" required>
+                <br><br>
+                <label for="">Email</label><br>
+                <input type="text" placeholder="email" v-model="email" required>
+                <br><br>
+                <label for="">Address(street)</label><br>
+                <input type="text" placeholder="addressStreet" v-model="addressStreet" required>
+                <br><br>
+                <label for="">Address(suite)</label><br>
+                <input type="text" placeholder="addressSuite" v-model="addressSuite" required>
+                <br><br>
+                <label for="">Address(city)</label><br>
+                <input type="text" placeholder="addressCity" v-model="addressCity" required>
+                <br><br>
+                <label for="">Address(zipcode)</label><br>
+                <input type="text" placeholder="addressZipcode" v-model="addressZipcode" required>
+                <br><br>
+                <label for="">Address(geo:lat)</label><br>
+                <input type="text" placeholder="addressGeoLat" v-model="addressGeoLat" required>
+                <br><br>
+                <label for="">Address(geo:lng)</label><br>
+                <input type="text" placeholder="addressGeoLng" v-model="addressGeoLng" required>
+                <br><br>
+                <label for="">Phone</label><br>
+                <input type="text" placeholder="phone" v-model="phone" required>
+                <br><br>
+                <label for="">Website</label><br>
+                <input type="text" placeholder="website" v-model="website" required>
+                <br><br>
+                <label for="">Company(name)</label><br>
+                <input type="text" placeholder="companyName" v-model="companyName" required>
+                <br><br>
+                <label for="">Company(catchPhrase)</label><br>
+                <input type="text" placeholder="companyCatchPhrase" v-model="companyCatchPhrase" required>
+                <br><br>
+                <label for="">Company(ps)</label><br>
+                <input type="text" placeholder="companyPs" v-model="companyPs" required>
+                <br><br>
+                <button @click="save" type="button">Save</button>
+                <button @click="cancel" type="button">Cancel</button>
+                <input type="hidden" v-model="id">
+            </fieldset>
+        </form>
+        <script>
+             const datos = Array('Id','Name','Username','Password','Email','Address(street)',
+             'Address(suite)','Address(city)','Address(zipcode)','Address(geo:lat)','Address(geo:lng)',
+             'Phone','Website','Company(name)','Company(catchPhrase)','Company(ps)','Acciones');
+             let titulos = document.createElement('tr');
+             for(var i=0; i<datos.length; i++){
+                 let titulo = document.createElement('td');
+                 titulo.innerHTML = datos[i];
+                 titulos.appendChild(titulo);
+                 document.getElementById('titulos').appendChild(titulo);
+                }        
+         </script>
+    </div>
+    <script type="text/javascript">
+        const{createApp}=Vue;
+        const app = createApp({
+            data(){
+                return{
+                    users:null,
+                    inAction:'show',
+                    name:'',
+                    id:0,
+                }
+            },
+            methods:{
+                action(m,u){
+                    if(m=='Add'){
+                        alert('Add');
+                        this.inAction='otraCosa';
+                    }else if (m=='edit'){
+                        this.inAction='otraCosa';
+                        alert('Edit');
+                    }
+                },
+                cancel(){
+                    this.inAction='show';
+                },
+                save(e){
+                    /*users:['11',this.name,this.username,this.email,this.email,this.addressStreet,
+                this.addressSuite,this.addressCity,this.addressZipcode,this.addressGeoLat,
+            this.addressGeoLng,this.phone,this.website,this.companyName,this.companyCatchPhrase,this.companyCatchPhrase];*/
+            name=this.name;     
+                    alert('aqui: '+name);
+                    users.name.
+                    this.inAction='show';
+                
+                },
+                remove(u){
+                    alert('Remove'+u);
+                    u.pop();
+                    var eliminar=u;
+
+                }
+                
+            },
+            mounted(){
+                fetch('users.json')
+                .then((res) => res.json())
+                .then((json) => (this.users = json))
+                .catch((err) => (error.value = err))
+                
+            }
+
+        }).mount('#contenedor')
+    </script>
+</body>
+</html>

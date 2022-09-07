@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JS</title>
+
+    <!--enlazar vue JS//-->
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+        #estiloIngresar{
+            background-color:aquamarine; 
+            border-color:azure; 
+            color:aliceblue; 
+            width:300px; 
+            height:200px;
+            margin:70px auto;
+        }
+        .tamañoBoton{
+            width: 70px;
+            height: 30px;
+            border-radius: 50px;
+            background-color: cadetblue;
+            color: aliceblue;
+            margin-top: 20px;
+        }
+        .camposTexto{
+            width: 230px;
+            height: 30px;
+            border-radius: 50px;
+        }
+        table{
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        th, td{
+            padding: 5px 10px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body style="background-color:beige;" width="200" height="200">
+    <!--crear contenedor-->
+    <div id="contenedor" > 
+          <form >
+            <center><h1 style="left:60px">Dashboard</h1></center>
+               <fieldset id="estiloIngresar">
+                    <legend style="color:black;">
+                        Acceso al panel
+                    </legend>
+                    <br>
+                    <center>
+                    <input class="camposTexto" type="email" v-model="email" name="" placeholder="Correo electronico">
+                    <br><br><br>
+                    <input class="camposTexto" type="password" v-model="password" name="" placeholder="Password">
+                    <br>
+                        <button class="tamañoBoton" @click="login">
+                             Acceder
+                        </button>
+                    </center>
+                    
+                </fieldset> 
+            
+            
+         </form>
+         <center><h1 id="lista">Tabla lista</h1></center>
+    </div>
+    <script type="text/javascript">
+        const datos = Array('Id','Name','Username','Password','Email','Address(street)',
+        'Address(suite)','Address(city)','Address(zipcode)','Address(geo:lat)','Address(geo:lng)',
+        'Phone','Website','Company(name)','Company(catchPhrase)','Company(ps)');
+        
+        let table = document.createElement('table');
+        let thead = document.createElement('thead');
+        let tbody = document.createElement('tbody');
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        //document.getElementById('body').appendChild(table);
+
+        
+
+        const{createApp}=Vue;
+        const app = createApp({
+            data() {
+                return {
+                    
+                    users:null,
+                    email:'',
+                    password:''
+                }
+            },
+            methods:{
+                login(e){
+                    e.preventDefault();
+
+                    var email_users=this.email;
+                    var password_users=this.password;
+
+                    let datosGenerales= Array();
+                    var incorrecto='nada';
+                    let table = document.createElement('table');
+                    let thead = document.createElement('thead');
+                    let tbody = document.createElement('tbody');
+
+                    table.appendChild(thead);
+                    table.appendChild(tbody);
+
+                    
+                    //document.getElementById('body').appendChild(table);
+
+                    var access = this.users.map (function(u){
+                        datosGenerales.push({
+                            id:u.id,
+                            name:u.name,
+                            username: u.username,
+                            password: u.password,
+                            email: u.email,
+                            address:{
+                                street:u.address.street,
+                                suite:u.address.suite,
+                                city:u.address.city,
+                                zipcode:u.address.zipcode,
+                                geo:{
+                                    lat:u.address.geo.lat,
+                                    lng:u.address.geo.lng
+                                }    
+                            },
+                            phone:u.phone,
+                            website:u.website,
+                            company:{
+                                name:u.company.name,
+                                catchPhrase:u.company.catchPhrase,
+                                bs:u.company.bs
+                            }
+                        })
+                        if(email_users==u.email.toLowerCase() || 
+                        email_users.toLowerCase()==u.email.toLowerCase()){
+                            if(password_users === u.password){
+                                alert('Acceso Correcto');
+                                return true;
+                            }
+                        }
+
+                    })
+                    console.log(access);
+                    if(access.includes(true)){
+                        
+                        window.location.href="data.html";
+                    }else{
+                        alert('Datos incorrectos');
+                    }
+                    /*
+                    for(var i=0; i<datosGenerales.length; i++){
+                        if(email_users.toLowerCase() == datosGenerales[i].email.toLowerCase() ||
+                        email_users == datosGenerales[i].email){
+                            alert('Email correcto '+email_users);
+                            incorrecto='correcto';
+                            if(password_users.toLowerCase () == datosGenerales[i].password.toLowerCase ()){
+                                alert('Contraseña correcta, BIENVENIDO:)');
+                                
+                                function tituloTabla(){
+                                    let titulos = document.createElement('tr');
+                                    for(var i=0; i<datos.length; i++){
+                                        let titulo = document.createElement('th');
+                                        titulo.innerHTML = datos[i];
+                                        titulos.appendChild(titulo);
+                                        thead.appendChild(titulos);
+                                    }
+                                            
+                                }
+                                /*
+                                function datosTabla(){
+                                    for(var i=0; i<datos.length; i++){
+                                        let titulos = document.createElement('tr');
+                                        let titulo = document.createElement('th');
+                                        let tituloDos = document.createElement('th');
+                                        let tituloTres = document.createElement('th');
+                                        let tituloCuatro = document.createElement('th');
+                                        let tituloCinco = document.createElement('th');
+                                        let tituloSeis = document.createElement('th');
+                                        let tituloSiete = document.createElement('th');
+                                        let tituloOcho = document.createElement('th');
+                                        let tituloNueve = document.createElement('th');
+                                        let tituloDiez = document.createElement('th');
+                                        let tituloOnce = document.createElement('th');
+                                        let tituloDoce = document.createElement('th');
+                                        let tituloTrece = document.createElement('th');
+                                        let tituloCatorce = document.createElement('th');
+                                        let tituloQuince = document.createElement('th');
+                                        let tituloDieciseis = document.createElement('th');
+
+                                        titulo.innerHTML = datosGenerales[i].id;
+                                        tituloDos.innerHTML = datosGenerales[i].name;
+                                        tituloTres.innerHTML = datosGenerales[i].username;
+                                        tituloCuatro.innerHTML = datosGenerales[i].password;
+                                        tituloCinco.innerHTML = datosGenerales[i].email;
+                                        tituloSeis.innerHTML = datosGenerales[i].address.street;
+                                        tituloSiete.innerHTML = datosGenerales[i].address.suite;
+                                        tituloOcho.innerHTML = datosGenerales[i].address.city;
+                                        tituloNueve.innerHTML = datosGenerales[i].address.zipcode;
+                                        tituloDiez.innerHTML = datosGenerales[i].address.geo.lat;
+                                        tituloOnce.innerHTML = datosGenerales[i].address.geo.lng;
+                                        tituloDoce.innerHTML = datosGenerales[i].phone;
+                                        tituloTrece.innerHTML = datosGenerales[i].website;
+                                        tituloCatorce.innerHTML = datosGenerales[i].company.name;
+                                        tituloQuince.innerHTML = datosGenerales[i].company.catchPhrase;
+                                        tituloDieciseis.innerHTML = datosGenerales[i].company.bs;
+
+                                        titulos.appendChild(titulo);
+                                        titulos.appendChild(tituloDos);
+                                        titulos.appendChild(tituloTres);
+                                        titulos.appendChild(tituloCuatro);
+                                        titulos.appendChild(tituloCinco);
+                                        titulos.appendChild(tituloSeis);
+                                        titulos.appendChild(tituloSiete);
+                                        titulos.appendChild(tituloOcho);
+                                        titulos.appendChild(tituloNueve);
+                                        titulos.appendChild(tituloDiez);
+                                        titulos.appendChild(tituloOnce);
+                                        titulos.appendChild(tituloDoce);
+                                        titulos.appendChild(tituloTrece);
+                                        titulos.appendChild(tituloCatorce);
+                                        titulos.appendChild(tituloQuince);
+                                        titulos.appendChild(tituloDieciseis);
+                                        tbody.appendChild(titulos);
+                                    }
+                                }
+                                tituloTabla();
+                                datosTabla();
+                            }else{
+                                alert('Contraseña incorrecta, INGRESA CORRECTA');
+                            
+
+                        }else if(i==9&&incorrecto=='nada'){
+                            alert('Email incorrecto: '+email_users);
+                            incorrecto='nada';
+                        }
+                    }*/
+                }
+            },
+            mounted(){
+                fetch('users.json')
+                .then((res) => res.json())
+                .then((json) => (this.users = json))
+                .catch((err) => (error.value = err))
+                
+            }
+        }).mount('#contenedor')
+    </script>
+</body>
+</html>
