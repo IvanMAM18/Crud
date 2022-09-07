@@ -154,39 +154,57 @@
         const app = createApp({
             data(){
                 return{
-                    users:null,
+                    users:[],
                     inAction:'show',
-                    name:'',
-                    id:0,
+                    nameUno:'',
+                    idUno:0,
+                    es:''
                 }
             },
             methods:{
                 action(m,u){
+                    
                     if(m=='Add'){
                         alert('Add');
-                        this.inAction='otraCosa';
+                        this.inAction='campos';
+                        alert('aqui; '+u);
+                        this.es='add';
                     }else if (m=='edit'){
-                        this.inAction='otraCosa';
-                        alert('Edit');
+                        this.inAction='campos';
+                        this.nameUno=u.name;
+                        this.idUno=u.id;
+                        this.es='edit';
+                        alert('Edit'+u.name);
                     }
                 },
                 cancel(){
                     this.inAction='show';
+                    alert('aqui: '+this.name+'---'+this.inAction);
                 },
                 save(e){
-                    /*users:['11',this.name,this.username,this.email,this.email,this.addressStreet,
+                   /* const valores ={id:'11',name:this.name,username:this.username,email:this.email,
+                    addressStreet:this.addressStreet,
                 this.addressSuite,this.addressCity,this.addressZipcode,this.addressGeoLat,
-            this.addressGeoLng,this.phone,this.website,this.companyName,this.companyCatchPhrase,this.companyCatchPhrase];*/
-            name=this.name;     
-                    alert('aqui: '+name);
-                    users.name.
+            this.addressGeoLng,this.phone,this.website,this.companyName,this.companyCatchPhrase,this.companyCatchPhrase};
+                */
+               //name:this.name;   
+               e.preventDefault();
+               if(this.es=='edit'){
+                    
                     this.inAction='show';
+               }else{
+                   var valores ={name:this.name};
+                   this.users.push(valores);
+                   alert('aqui: '+this.name+'---'+this.inAction);
+                   this.inAction='show';
+               }
+                
+                
                 
                 },
                 remove(u){
                     alert('Remove'+u);
-                    u.pop();
-                    var eliminar=u;
+                    this.users=this.users.filter(users => users.id != u);
 
                 }
                 
