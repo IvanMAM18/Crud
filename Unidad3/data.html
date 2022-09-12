@@ -21,9 +21,63 @@
     <button @click="action('Add',null)">
         Add
     </button>
-        <table id="agregar" v-if="(inAction=='show')">
-            <thead id="titulos"></thead>
-            <tbody >
+        <table v-if="(inAction=='show')">
+            <thead >
+                <tr>
+                    <td>
+                        #Id
+                    </td>
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        Username
+                    </td>
+                    <td>
+                        Password
+                    </td>
+                    <td>
+                        Email
+                    </td>
+                    <td>
+                        Address(street)
+                    </td>
+                    <td>
+                        Address(suite)
+                    </td>
+                    <td>
+                        Address(city)
+                    </td>
+                    <td>
+                        Address(zipcode)
+                    </td>
+                    <td>
+                        Address(geo.lat)
+                    </td>
+                    <td>
+                        Address(Geo.lng)
+                    </td>
+                    <td>
+                        Phone
+                    </td>
+                    <td>
+                        Website
+                    </td>
+                    <td>
+                        Company(name)
+                    </td>
+                    <td>
+                        Company(catchPhras)
+                    </td>
+                    <td>
+                        Company(bs)
+                    </td>
+                    <td>
+                        Acciones
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
                 <tr v-for="u in users">
                     <td>
                         {{u.id}}
@@ -126,86 +180,166 @@
                 <input type="text" placeholder="companyName" v-model="companyName" required>
                 <br><br>
                 <label for="">Company(catchPhrase)</label><br>
-                <input type="text" placeholder="companyCatchPhrase" v-model="companyCatchPhrase" required>
+                <input type="text" placeholder="companyCatchPhras" v-model="companyCatchPhrase" required>
                 <br><br>
-                <label for="">Company(ps)</label><br>
-                <input type="text" placeholder="companyPs" v-model="companyPs" required>
+                <label for="">Company(bs)</label><br>
+                <input type="text" placeholder="companyBs" v-model="companyBs" required>
                 <br><br>
                 <button @click="save" type="button">Save</button>
                 <button @click="cancel" type="button">Cancel</button>
                 <input type="hidden" v-model="id">
             </fieldset>
         </form>
-        <script>
-             const datos = Array('Id','Name','Username','Password','Email','Address(street)',
-             'Address(suite)','Address(city)','Address(zipcode)','Address(geo:lat)','Address(geo:lng)',
-             'Phone','Website','Company(name)','Company(catchPhrase)','Company(ps)','Acciones');
-             let titulos = document.createElement('tr');
-             for(var i=0; i<datos.length; i++){
-                 let titulo = document.createElement('td');
-                 titulo.innerHTML = datos[i];
-                 titulos.appendChild(titulo);
-                 document.getElementById('titulos').appendChild(titulo);
-                }        
-         </script>
     </div>
     <script type="text/javascript">
         const{createApp}=Vue;
         const app = createApp({
             data(){
                 return{
-                    users:[],
+                    users:null,
                     inAction:'show',
-                    nameUno:'',
-                    idUno:0,
-                    es:''
+                    name:'',
+                    username:'',
+                    password:'',
+                    email:'',
+                    addressStreet:'',
+                    addressSuite:'',
+                    addressCity:'',
+                    addressZipcode:'',
+                    addressGeoLat:'',
+                    addressGeoLng:'',
+                    phone:'',
+                    website:'',
+                    companyName:'',
+                    companyCatchPhrase:'',
+                    companyBs:'',
+                    id:0,
                 }
             },
             methods:{
                 action(m,u){
-                    
-                    if(m=='Add'){
-                        alert('Add');
-                        this.inAction='campos';
-                        alert('aqui; '+u);
-                        this.es='add';
-                    }else if (m=='edit'){
-                        this.inAction='campos';
-                        this.nameUno=u.name;
-                        this.idUno=u.id;
-                        this.es='edit';
-                        alert('Edit'+u.name);
+                    this.inAction=m;
+                    if (m=='edit'){
+                        this.name=u.name;
+                        this.id=u.id;
+                        this.username=u.username;
+                        this.password=u.password;
+                        this.email=u.email;
+                        this.addressStreet=u.address.street;
+                        this.addressSuite=u.address.suite;
+                        this.addressCity=u.address.city;
+                        this.addressZipcode=u.address.zipcode;
+                        this.addressGeoLat=u.address.geo.lat;
+                        this.addressGeoLng=u.address.geo.lng;
+                        this.phone=u.phone;
+                        this.website=u.website;
+                        this.companyName=u.company.name;
+                        this.companyCatchPhrase=u.company.catchPhrase;
+                        this.companyBs=u.company.bs;
+                    }else{
+                        this.name='';
+                        this.username='';
+                        this.password='';
+                        this.email='';
+                        this.addressStreet='';
+                        this.addressSuite='';
+                        this.addressCity='';
+                        this.addressZipcode='';
+                        this.addressGeoLat='';
+                        this.addressGeoLng='';
+                        this.phone='';
+                        this.website='';
+                        this.companyName='';
+                        this.companyCatchPhrase='';
+                        this.companyBs='';
+                        this.id=0;
                     }
                 },
                 cancel(){
                     this.inAction='show';
-                    alert('aqui: '+this.name+'---'+this.inAction);
                 },
                 save(e){
-                   /* const valores ={id:'11',name:this.name,username:this.username,email:this.email,
-                    addressStreet:this.addressStreet,
-                this.addressSuite,this.addressCity,this.addressZipcode,this.addressGeoLat,
-            this.addressGeoLng,this.phone,this.website,this.companyName,this.companyCatchPhrase,this.companyCatchPhrase};
-                */
-               //name:this.name;   
-               e.preventDefault();
-               if(this.es=='edit'){
-                    
-                    this.inAction='show';
-               }else{
-                   var valores ={name:this.name};
-                   this.users.push(valores);
-                   alert('aqui: '+this.name+'---'+this.inAction);
-                   this.inAction='show';
-               }
-                
-                
-                
+                    e.preventDefault();
+                    var access;
+
+                    if(this.inAction=='edit'){
+                            let id = this.id;
+                            let name = this.name;
+                            let username = this.username;
+                            let password = this.password;
+                            let email = this.email;
+                            let addressStreet = this.addressStreet;
+                            let addressSuite = this.addressSuite;
+                            let addressCity = this.addressCity;
+                            let addressZipcode = this.addressZipcode;
+                            let addressGeoLat = this.addressGeoLat;
+                            let addressGeoLng = this.addressGeoLng;
+                            let phone = this.phone;
+                            let website = this.website;
+                            let companyName = this.companyName;
+                            let companyCatchPhrase = this.companyCatchPhrase;
+                            let companyBs = this.companyBs;
+                            
+                            access = this.users.map(function(u){
+                                if(id == u.id){
+
+                                    u.name=name;
+                                    u.username=username;
+                                    u.password=password;
+                                    u.email=email;
+                                    u.address.street=addressStreet;
+                                    u.address.suite=addressSuite;
+                                    u.address.city=addressCity;
+                                    u.address.zipcode=addressZipcode;
+                                    u.address.geo.lat=addressGeoLat;
+                                    u.address.geo.lng=addressGeoLng;
+                                    u.phone=phone;
+                                    u.website=website;
+                                    u.company.name=companyName;
+                                    u.company.catchPhrase=companyCatchPhrase;
+                                    u.company.bs=companyBs;
+
+                                    swal("Se edito con exito","","success");
+
+                                    return true;
+                                }
+                            })
+
+                            if(access.includes(true)){
+                                this.name='';
+                                this.username='';
+                                this.password='';
+                                this.email='';
+                                this.addressStreet='';
+                                this.addressSuite='';
+                                this.addressCity='';
+                                this.addressZipcode='';
+                                this.addressGeoLat='';
+                                this.addressGeoLng='';
+                                this.phone='';
+                                this.website='';
+                                this.companyName='';
+                                this.companyCatchPhrase='';
+                                this.companyBs='';
+                                this.id=0;
+                                this.inAction = 'show';
+                            }else{
+                                swal("Error al editar","XXX","error");
+                            }
+
+                    }else{
+                        this.users.push({id:this.users.length+1,name:this.name,username:this.username,password:this.password,
+                            email:this.email, address:{street:this.addressStreet,suite:this.addressSuite,
+                            city:this.addressCity,zipcode:this.addressZipcode,geo:{lat:this.addressGeoLat,lng:this.addressGeoLng}}
+                            ,phone:this.phone,website:this.website,company:{name:this.companyName,catchPhrase:this.companyCatchPhrase,
+                            bs:this.companyBs}});
+                        swal("Se añadio con exito","","success");
+                            this.inAction = 'show';
+                    }
                 },
                 remove(u){
-                    alert('Remove'+u);
+                    swal("Se elimino con exito","","success");
                     this.users=this.users.filter(users => users.id != u);
-
                 }
                 
             },
